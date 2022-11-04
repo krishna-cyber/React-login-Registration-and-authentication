@@ -1,12 +1,16 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { BiErrorCircle } from "react-icons/bi";
 
 //making schema using yup
 
 const form = () => {
   const schema = yup.object().shape({
-    username: yup.string().email().required("Username is required"),
+    username: yup
+      .string()
+      .email("mail did not match format - test@example.com")
+      .required("Username is required"),
     password: yup
       .string()
       .required("Password is required")
@@ -27,9 +31,7 @@ const form = () => {
     {
       resolver: yupResolver(schema),
     },
-    {
-      mode: "onChange",
-    }
+    { mode: "onChange" }
   );
 
   const getData = (data) => console.log(data);
@@ -47,7 +49,12 @@ const form = () => {
           className='border-2 border-sky-500 rounded-md p-1'
           {...register("username", { required: true })}
         />
-        {errors.username?.message}
+        {errors.username && (
+          <p className=' text-red-400 bg-slate-700 mt-3 p-2 rounded-md'>
+            <BiErrorCircle className=' inline-block mr-2' />
+            {errors.username.message}
+          </p>
+        )}
         <label className='text-white mt-3' htmlFor=''>
           Password:
         </label>
@@ -57,7 +64,10 @@ const form = () => {
           {...register("password", { required: true })}
         />
         {errors.password && (
-          <p className=' text-white'>{errors.password.message}</p>
+          <p className=' text-red-400 bg-slate-700 mt-3 p-2 rounded-md'>
+            <BiErrorCircle className=' inline-block mr-2' />
+            {errors.password.message}
+          </p>
         )}
         <label className='text-white mt-3' htmlFor=''>
           Confirm Password:
@@ -67,12 +77,18 @@ const form = () => {
           type='password'
           {...register("confirmPassword", { required: true })}
         />
-        {errors.confirmPassword?.message}
-        <input
-          className='mt-3 bg-sky-300 p-2 rounded-lg cursor-pointer'
-          type='submit'
-          value='Signup'
-        />
+        {errors.confirmPassword && (
+          <p className=' text-red-400 bg-slate-700 mt-3 p-2 rounded-md'>
+            <BiErrorCircle className=' inline-block mr-2' />
+            {errors.confirmPassword.message}
+          </p>
+        )}
+
+        <button
+          className='mt-3 bg-sky-300 text-white font-medium text-xl p-2 rounded-lg hover:bg-sky-400'
+          type='submit'>
+          Submit
+        </button>
       </form>
     </>
   );
