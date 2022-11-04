@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { BiErrorCircle } from "react-icons/bi";
+import { VscError } from "react-icons/vsc";
 
 //making schema using yup
 
@@ -26,13 +26,11 @@ const form = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm(
-    {
-      resolver: yupResolver(schema),
-    },
-    { mode: "onChange" }
-  );
+    formState: { errors, isValid, isDirty },
+  } = useForm({
+    resolver: yupResolver(schema),
+    mode: "onChange",
+  });
 
   const getData = (data) => console.log(data);
   return (
@@ -51,7 +49,7 @@ const form = () => {
         />
         {errors.username && (
           <p className=' text-red-400 bg-slate-700 mt-3 p-2 rounded-md'>
-            <BiErrorCircle className=' inline-block mr-2' />
+            <VscError className=' inline-block mr-2' />
             {errors.username.message}
           </p>
         )}
@@ -65,7 +63,7 @@ const form = () => {
         />
         {errors.password && (
           <p className=' text-red-400 bg-slate-700 mt-3 p-2 rounded-md'>
-            <BiErrorCircle className=' inline-block mr-2' />
+            <VscError className=' inline-block mr-2' />
             {errors.password.message}
           </p>
         )}
@@ -79,14 +77,15 @@ const form = () => {
         />
         {errors.confirmPassword && (
           <p className=' text-red-400 bg-slate-700 mt-3 p-2 rounded-md'>
-            <BiErrorCircle className=' inline-block mr-2' />
+            <VscError className=' inline-block mr-2' />
             {errors.confirmPassword.message}
           </p>
         )}
 
         <button
-          className='mt-3 bg-sky-300 text-white font-medium text-xl p-2 rounded-lg hover:bg-sky-400'
-          type='submit'>
+          className='mt-3 bg-sky-300 text-white font-medium text-xl p-2 rounded-lg disabled:bg-sky-200 disabled:text-slate-400 '
+          type='submit'
+          disabled={!isValid || !isDirty}>
           Submit
         </button>
       </form>
