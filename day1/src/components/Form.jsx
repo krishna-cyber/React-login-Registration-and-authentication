@@ -88,6 +88,10 @@ const form = () => {
           disabled={!isValid || !isDirty}>
           Submit
         </button>
+        <p className=' text-slate-300 mt-2'>Already Registered?</p>
+        <p className=' text-white text-slate-300 underline'>
+          <a href='#'>Sign In</a>
+        </p>
       </form>
     </>
   );
