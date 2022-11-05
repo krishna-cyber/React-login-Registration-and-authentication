@@ -1,9 +1,15 @@
 import React from "react";
+
+// import axios from "../api/axios";
+// import AuthContext from "../context/AuthProvider";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
+// const LOGIN_URL = "/login";
+
 const Login = () => {
+  // const { setAuthenticated } = useContext(AuthContext);
   const schema = yup.object().shape({
     username: yup
       .string()
@@ -27,8 +33,13 @@ const Login = () => {
   });
   const getdata = async (data) => {
     console.log(data);
-    setSubmit(isSubmitSuccessful);
-    console.log(isSubmitSuccessful);
+    try {
+      const response = await axios.post(LOGIN_URL, data);
+      setAuthenticated(true);
+      localStorage.setItem("token", response.data.token);
+    } catch (error) {
+      console.log(error);
+    }
   };
   const [submit, setSubmit] = React.useState(false);
   return (
